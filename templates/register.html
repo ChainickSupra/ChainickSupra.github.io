@@ -1,0 +1,26 @@
+<html lang="ru">
+	<head>
+		<meta charset="UTF-8">
+		<title> Register </title>
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">			 
+	</head>
+	<body></br></br></br></br></br>
+		<div align="center">
+		<div align="center" class="border">
+			<div class="header">
+				<h1 class="word">Регистрация</h1>
+			</div></br></br></br>
+			<h2 class="word">
+				<form action="{{ url_for('register') }}" method="post">
+				<div class="msg">{{ msg }}</div>
+					<input id="username" name="username" type="text" placeholder="Введите имя пользователя" class="textbox"/></br></br>
+					<input id="password" name="password" type="password" placeholder="Введите пароль" class="textbox"/></br></br>
+					<input id="email" name="email" type="text" placeholder="Введите Email" class="textbox"/></br></br>
+					<input type="submit" class="btn" value="Регистрация"></br>
+				</form>
+			</h2>
+			<p class="bottom">Уже есть аккаунт? <a class="bottom" href="{{url_for('login')}}"> Авторизоваться</a></p>
+		</div>
+		</div>
+	</body>
+</html>
