@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Профиль пользователя</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+    <style>
+        
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
+            padding-top: 100px; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgb(0,0,0); 
+            background-color: rgba(0,0,0,0.9); 
+        }
+
+        
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+        }
+
+        
+        #caption {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+            text-align: center;
+            color: #ccc;
+            padding: 10px 0;
+            height: 150px;
+        }
+
+        
+        .modal-content, #caption { 
+            -webkit-animation-name: zoom;
+            -webkit-animation-duration: 0.6s;
+            animation-name: zoom;
+            animation-duration: 0.6s;
+        }
+
+        @-webkit-keyframes zoom {
+            from {-webkit-transform:scale(0)} 
+            to {-webkit-transform:scale(1)}
+        }
+
+        @keyframes zoom {
+            from {transform:scale(0)} 
+            to {transform:scale(1)}
+        }
+
+        
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <h1>Профиль пользователя {{ user['username'] }}</h1>
+        <h2>Контактная информация</h2>
+        <p>Email: {{ user['email'] }}</p>
+        <form method="post">
+            <label for="skills">Навыки:</label>
+            <textarea id="skills" name="skills">{{ profile['skills'] if profile else '' }}</textarea><br>
+
+            <label for="experience">Опыт:</label>
+            <textarea id="experience" name="experience">{{ profile['experience'] if profile else '' }}</textarea><br>
+
+            <label for="contact_info">Контактная информация:</label>
+            <textarea id="contact_info" name="contact_info">{{ profile['contact_info'] if profile else '' }}</textarea><br>
+
+            <input type="submit" value="Сохранить">
+        </form>
+
+        <h2>Галерея работ</h2>
+        <form action="{{ url_for('upload_image') }}" method="post">
+            <label for="image_url">URL изображения:</label>
+            <input type="text" id="image_url" name="image_url"><br>
+
+            <label for="description">Описание:</label>
+            <textarea id="description" name="description"></textarea><br>
+
+            <input type="submit" value="Загрузить">
+        </form>
+        <div class="gallery">
+            {% for item in gallery %}
+                <div>
+                    <img src="{{ item['image_url'] }}" alt="Работа" style="width:100%;max-width:300px" onclick="openModal(this)">
+                    <p>{{ item['description'] }}</p>
+                </div>
+            {% endfor %}
+        </div>
+
+        <h2>Резюме</h2>
+        <form action="{{ url_for('upload_resume') }}" method="post">
+            <label for="resume_text">Резюме:</label>
+            <textarea id="resume_text" name="resume_text">{{ resume['resume_text'] if resume else '' }}</textarea><br>
+            <input type="submit" value="Сохранить">
+        </form>
+
+        <a href="{{ url_for('index') }}" class="back-link">Вернуться на главную страницу</a>
+    </div>
+
+    
+    <div id="myModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="img01">
+        <div id="caption"></div>
+    </div>
+
+    <script>
+        function openModal(element) {
+            var modal = document.getElementById("myModal");
+            var modalImg = document.getElementById("img01");
+            var captionText = document.getElementById("caption");
+
+            modal.style.display = "block";
+            modalImg.src = element.src;
+            captionText.innerHTML = element.nextElementSibling.innerHTML;
+        }
+
+        function closeModal() {
+            var modal = document.getElementById("myModal");
+            modal.style.display = "none";
+        }
+    </script>
+</body>
+</html>

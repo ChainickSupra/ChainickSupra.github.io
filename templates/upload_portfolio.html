@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Загрузить портфолио</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/upload.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/3.jpg') }}">    
+</head>
+
+<body>
+    <div class="header">
+        <a href="#" class="logo"></a> 
+        <div class="nav-links">
+            <a href="#" class="nav-link">Профиль</a>
+            <a href="#" class="nav-link">Выйти</a>
+        </div>
+    </div>
+    <div class="main">
+        <h1>Загрузить портфолио</h1>
+        <form method="POST" action="{{ url_for('upload_portfolio') }}">
+            <label for="profession">Профессия:</label>
+            <input type="text" id="profession" name="profession" required>
+            <button type="submit">Загрузить</button>
+        </form>
+        <a href="{{ url_for('index') }}" class="link">Вернуться на главную</a>
+    </div>
+    <div class="footer"></div>
+</body>
+</html>

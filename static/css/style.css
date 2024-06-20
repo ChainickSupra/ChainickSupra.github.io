@@ -1,50 +1,61 @@
-.header{
-    padding: 5px 120px;
-    width: 150px;
-    height: 70px;
-    background-color: #236B8E; 
+body {
+    font-family: Arial, sans-serif;
+    background: url('../img/1.jpg') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
 }
 
-.border{
-    padding: 80px 50px;
-    width: 400px;
-    height: 450px;
-    border: 1px solid #236B8E;
-    border-radius: 0px;
-    background-color: #9AC0CD;
+.border {
+    background-color: rgba(255, 255, 255, 0.8); 
+    border: 2px solid black;
+    border-radius: 15px;
+    padding: 20px;
+    width: 300px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.header {
+    margin-bottom: 20px;
+}
+
+.word {
+    color: black;
+    text-align: center;
+}
+
+.textbox {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 2px solid black;
+    border-radius: 5px;
+    box-sizing: border-box;
 }
 
 .btn {
-    padding: 10px 40px;
-    background-color: #236B8E; 
-    color: #FFFFFF;
-    font-style: oblique;
-    font-weight: bold;
-    border-radius: 10px;
+    width: 100%;
+    padding: 10px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
-.textbox{
-    padding: 10px 40px;
-    background-color: #236B8E; 
-    text-color: #FFFFFF;
-    border-radius: 10px;
-}
-    
-::placeholder {
-    color: #FFFFFF;
-    opacity: 1;
-    font-style: oblique;
-    font-weight: bold;
+.btn:hover {
+    background-color: #333;
 }
 
-.word{
-    color: #FFFFFF;
-    font-style: oblique;
-    font-weight: bold;
+.bottom {
+    color: black;
+    text-decoration: none;
 }
 
-.bottom{
-    color: #236B8E;
-    font-style: oblique;
-    font-weight: bold;
+.bottom a {
+    color: black;
+    text-decoration: underline;
 }
