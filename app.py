@@ -74,6 +74,7 @@ def login():
             msg = 'Неверные логин/пароль'
     return render_template('login.html', msg=msg)
 
+
 @app.route('/logout')
 def logout():
     session.pop('loggedin', None)
@@ -124,13 +125,22 @@ def profile(user_id):
     resume = cursor.fetchone()
 
     if request.method == 'POST' and 'loggedin' in session and session['id'] == user_id:
-        skills = request.form.get('skills')
-        experience = request.form.get('experience')
-        contact_info = request.form.get('contact_info')
+        if 'skills' in request.form and 'experience' in request.form and 'contact_info' in request.form:
+            skills = request.form['skills']
+            experience = request.form['experience']
+            contact_info = request.form['contact_info']
 
-        cursor.execute('REPLACE INTO profiles (user_id, skills, experience, contact_info) VALUES (%s, %s, %s, %s)',
-                       (user_id, skills, experience, contact_info))
-        mysql.connection.commit()
+            cursor.execute('REPLACE INTO profiles (user_id, skills, experience, contact_info) VALUES (%s, %s, %s, %s)',
+                           (user_id, skills, experience, contact_info))
+            mysql.connection.commit()
+            flash('Профиль обновлен', 'success')
+        
+        if 'resume_text' in request.form:
+            resume_text = request.form['resume_text']
+            cursor.execute('REPLACE INTO resumes (user_id, resume_text) VALUES (%s, %s)', (user_id, resume_text))
+            mysql.connection.commit()
+            flash('Резюме обновлено', 'success')
+        
         return redirect(url_for('profile', user_id=user_id))
 
     return render_template('profile.html', user=user, profile=profile, gallery=gallery, resume=resume)
@@ -149,6 +159,24 @@ def upload_image():
         return redirect(url_for('profile', user_id=user_id))
     return redirect(url_for('login'))
 
+@app.route('/delete_image/<int:image_id>', methods=['POST'])
+def delete_image(image_id):
+    if 'loggedin' not in session:
+        return redirect(url_for('login'))
+
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT user_id FROM gallery WHERE id = %s', [image_id])
+    image = cursor.fetchone()
+
+    if image and image['user_id'] == session['id']:
+        cursor.execute('DELETE FROM gallery WHERE id = %s', [image_id])
+        mysql.connection.commit()
+        flash('Изображение удалено', 'success')
+    else:
+        flash('Вы не можете удалить это изображение', 'danger')
+
+    return redirect(url_for('profile', user_id=session['id']))
+
 @app.route('/upload_resume', methods=['POST'])
 def upload_resume():
     if 'loggedin' in session:
@@ -161,6 +189,7 @@ def upload_resume():
         
         return redirect(url_for('profile', user_id=user_id))
     return redirect(url_for('login'))
+
 
 @app.route('/upload_portfolio', methods=['GET', 'POST'])
 def upload_portfolio():
